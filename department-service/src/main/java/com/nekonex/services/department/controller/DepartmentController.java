@@ -2,17 +2,18 @@ package com.nekonex.services.department.controller;
 
 import java.util.List;
 
-import com.nekonex.services.department.client.EmployeeClient;
-import com.nekonex.services.department.model.Department;
-import com.nekonex.services.department.repository.DepartmentRepository;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.nekonex.services.department.client.EmployeeClient;
+import com.nekonex.services.department.model.Department;
+import com.nekonex.services.department.repository.DepartmentRepository;
 
-@Controller("/departments")
+
+@Controller("/api/departments")
 public class DepartmentController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);

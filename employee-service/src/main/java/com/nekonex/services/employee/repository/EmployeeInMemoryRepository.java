@@ -3,7 +3,7 @@ package com.nekonex.services.employee.repository;
 import com.nekonex.services.employee.model.Employee;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.runtime.context.scope.Refreshable;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;

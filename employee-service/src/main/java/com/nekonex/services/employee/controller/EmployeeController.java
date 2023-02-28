@@ -9,7 +9,7 @@ import io.micronaut.http.annotation.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.List;
 
 @Controller("/employees")
@@ -50,7 +50,7 @@ public class EmployeeController {
 		return repository.findByOrganization(organizationId);
 	}
 
-	@Get("/Count")
+	@Get("/count")
 	long count() {
 		return repository.count();
 	}

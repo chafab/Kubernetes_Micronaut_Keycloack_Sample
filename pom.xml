@@ -4,9 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>io.micronaut</groupId>
+        <artifactId>micronaut-parent</artifactId>
+        <version>3.8.5</version>
+    </parent>
+
     <groupId>com.nekonex.services</groupId>
-    <artifactId>sample-micronaut-kubernetes-keycloack</artifactId>
+    <artifactId>kubernetes-micronaut-keycloack-sample</artifactId>
     <version>1.0</version>
+
     <modules>
         <module>employee-service</module>
         <module>department-service</module>
@@ -14,14 +21,32 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
-        <sonar.projectKey>nekonex_sample-micronaut-kubernetes-keycloack</sonar.projectKey>
+        <jdk.version>11</jdk.version>
+        <sonar.projectKey>kubernetes-micronaut-keycloack-sample</sonar.projectKey>
         <sonar.organization>nekonex</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <micronaut.version>3.8.5</micronaut.version>
+        <jib.maven-plugin-version>1.8.0</jib.maven-plugin-version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.micronaut</groupId>
+                <artifactId>micronaut-bom</artifactId>
+                <version>${micronaut.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.micronaut.build</groupId>
+                <artifactId>micronaut-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -43,4 +68,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

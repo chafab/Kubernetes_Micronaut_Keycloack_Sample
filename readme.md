@@ -35,21 +35,33 @@ kubernetes     192.168.49.2:8443   12h
 mongodb        10.244.0.5:27017    12h
 
 try then 
-curl http://KUBERNET_HOST:EMPLOYEE_SERVICE_PORT/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
-curl http://KUBERNET_HOST:DEPARTMENT_SERVICE_PORT/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"{"id":2,"organizationId":2,"name":"Test2"}
-curl http://KUBERNET_HOST:ORGANIZATION_SERVICE_PORT/departments/organization/2/with-employees
+curl http://KUBERNET_HOST:EMPLOYEE_SERVICE_PORT/api/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
+curl http://KUBERNET_HOST:DEPARTMENT_SERVICE_PORT/api/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"{"id":2,"organizationId":2,"name":"Test2"}
+curl http://KUBERNET_HOST:ORGANIZATION_SERVICE_PORT/api/departments/organization/2/with-employees
 
 In the examples above 
-curl http://192.168.49.2:30377/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
-curl http://192.168.49.2:30377/employees -d '{"name":"Paul Walker","age":50,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
-curl http://192.168.49.2:30266/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"
-curl http://192.168.49.2:30266/departments/organization/2/with-employees
+curl http://192.168.49.2:30377/api/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
+curl http://192.168.49.2:30377/api/employees -d '{"name":"Paul Walker","age":50,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
+curl http://192.168.49.2:30266/api/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"
+curl http://192.168.49.2:30266/api/departments/organization/2/with-employees
 
 If you are using wsl you can forward the services port using
 kubectl port-forward service/department 30266:8080
 
 Before running any application in default namespace we need to set the appropriate permissions. Micronaut Kubernetes requires read access to pods, endpoints, secrets, services and config maps. For development needs we may set the highest level of permissions by creating ClusterRoleBinding pointing to cluster-admin role.
 kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=default:default
+
+When applyfing the kubernetes ingress yaml file you can check the status
+kubectl get ingress
+As this operation can take a bit of time wait until the IP address is displayed for example
+NAME              CLASS   HOSTS                  ADDRESS        PORTS   AGE
+nekonex-ingress   nginx   nekonex-ingress.info   192.168.49.2   80      66m
+
+please change your /etc/hosts to have the nekones-ingress.info setup for example
+sudo sh -c 'echo "192.168.49.2 nekonex-ingress.info" >> /etc/hosts'
+
+Now instead of querying directly through the pods you can query with ingress for example
+curl nekonex-ingress.info/api/employees/count
 
 #Here are the commands for installing the dependencies
 
