@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employee
+  labels:
+    app: employee
+data:
+  application.yaml: |-
+    mongodb:
+      collection: employee
+      database: admin
+      #in-memory-store.enabled: true
+    test.employees:
+      - id: 1
+        organizationId: 1
+        departmentId: 1
+        name: John Smith
+        age: 22
+        position: Developer
+      - id: 2
+        organizationId: 1
+        departmentId: 2
+        name: Paul Walker
+        age: 33
+        position: Tester
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: employee
+  labels:
+    app: employee
+type: Opaque
+data:
+  mongodb.uri: bW9uZ29kYjovL21pY3JvbmF1dDptaWNyb25hdXRfMTIzQG1vbmdvZGI6MjcwMTcvYWRtaW4=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee
+  labels:
+    app: employee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee
+  template:
+    metadata:
+      labels:
+        app: employee
+    spec:
+      containers:
+        - name: employee
+          image: nekonex/employee
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee
+  labels:
+    app: employee
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    app: employee
+  type: NodePort

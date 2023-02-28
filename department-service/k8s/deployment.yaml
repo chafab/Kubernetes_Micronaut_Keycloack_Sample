@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: department
+  labels:
+    app: department
+data:
+  application.yaml: |-
+    endpoints:
+      health:
+        details-visible: ANONYMOUS
+    mongodb:
+      collection: department
+      database: admin
+    kubernetes:
+      client:
+        discovery:
+          includes:
+            - employee
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: department
+  labels:
+    app: department
+type: Opaque
+data:
+  mongodb.uri: bW9uZ29kYjovL21pY3JvbmF1dDptaWNyb25hdXRfMTIzQG1vbmdvZGI6MjcwMTcvYWRtaW4=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: department
+  labels:
+    app: department
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: department
+  template:
+    metadata:
+      labels:
+        app: department
+    spec:
+      containers:
+        - name: department
+          image: nekonex/department
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: department
+  labels:
+    app: department
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+  selector:
+    app: department
+  type: NodePort

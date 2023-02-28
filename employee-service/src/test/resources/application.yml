@@ -1,0 +1,8 @@
+test:
+  employees:
+    - id: 10
+      name: Fabrice Chabance
+      age: 41
+      position: developer
+      departmentId: 1
+      organizationId: 1
