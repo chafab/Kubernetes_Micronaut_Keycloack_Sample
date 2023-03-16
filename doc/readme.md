@@ -1,7 +1,7 @@
 # Guide to Micronaut Kubernetes KeyCloack Sample Project
 
 In this project I'm demonstrating you the most interesting features of [Micronaut Kubernetes Project](https://micronaut-projects.github.io/micronaut-kubernetes/snapshot/guide/) for integration between Micronaut, Keycloak and Kubernetes API.
- 
+
 ### Usage
 To successfully run example applications you need to have:
 1. JDK11+ as a default Java on your machine
@@ -13,11 +13,11 @@ To successfully run example applications you need to have:
 
 Our sample microservices-based system consists of the following modules:
 - **employee-service** - a module containing the first of our sample microservices that allows to perform CRUD operation on Mongo repository of employees
-- **department-service** - a module containing the second of our sample microservices that allows to perform CRUD operation on Mongo repository of departments. It communicates with employee-service. 
+- **department-service** - a module containing the second of our sample microservices that allows to perform CRUD operation on Mongo repository of departments. It communicates with employee-service.
 
 The following picture illustrates the architecture described above including Kubernetes objects.
 
-![Microservices Diagram](doc/pictures/diagram.png)
+![Microservices Diagram](pictures/diagram.png)
 
 If you have not done so install the dependencies. Instructions can be found in the dedicated section below.
 Then proceed by doing `Minikube start`
@@ -34,13 +34,13 @@ Go to the k8s folder and apply the followin:
 `kubectl apply -f postgres-deployment.yaml` : creates the postgresdb that can be used by keycloak. keycloak also support MySQL  
 `kubectl apply -f mongo-deployment.yaml` : creates the MongoDB that will be used in our services. Note that usually each service should have it's own DB which is not the case here.  
 `kubectl apply -f keycloak-deployment.yaml` : creates the keycloak service and can be accessed by forwarding the port and using the login admin password admin  
-`kubectl apply -f ingress-deployment.yaml` : creates the ingress component that can be used to access the different services  
+`kubectl apply -f ingress-deployment.yaml` : creates the ingress component that can be used to access the different services
 
 Now each of our services can be run in each directory by running
 ```
 skaffold dev
 ```
-kubectl get services check the port of employee service for example :  
+kubectl get services check the port of employee service for example :
 ```
 NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE  
 department     NodePort    10.101.202.105   <none>        8080:30266/TCP   88s  
