@@ -9,3 +9,10 @@ test:
 mongodb:
   database: test
   collection: employee
+micronaut:
+  security:
+    enabled: true
+    intercept-url-map:
+      - pattern: '/employees/**'
+        access:
+          - isAnonymous()

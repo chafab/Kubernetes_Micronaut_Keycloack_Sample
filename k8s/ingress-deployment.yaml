@@ -2,26 +2,46 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nekonex-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* ^/api/keycloak(/|$)(.*) {
+        rewrite ^/api/keycloak(/|$)(.*) /$2 break;
+        proxy_pass http://keycloak.default:8080;
+      }
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Forwarded-Server $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
 spec:
   rules:
     - host: nekonex-ingress.info
       http:
         paths:
-          - path: /api/departments
+          - path: /api/keycloak(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+          - path: /api/departments(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: department
                 port:
                   number: 8080
-          - path: /api/employees
+          - path: /api/employees(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: employee
                 port:
                   number: 8080
-          - path: /v2
+          - path: /v2(/|$)(.*)
             pathType: Prefix
             backend:
               service:

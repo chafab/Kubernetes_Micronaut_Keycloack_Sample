@@ -3,6 +3,30 @@ micronaut:
     name: employee
   config-client:
     enabled: true
+  security:
+    authentication: idtoken
+    endpoints:
+      login:
+        enabled: true
+    redirect:
+      login-success: /secure/anonymous
+    token:
+      jwt:
+        enabled: true
+        signatures.jwks.keycloak:
+          url: http://nekonex-ingress.info/api/keycloak/auth/realms/nekonex-realm/protocol/openid-connect/certs
+    oauth2.clients.keycloak:
+      grant-type: password
+      client-id: micronaut
+      client-secret: vpZc32tNBFUbzqZpbSsBwETiT0flVTXV
+      authorization:
+        url: http://nekonex-ingress.info/api/keycloak/auth/realms/nekonex-realm/protocol/openid-connect/auth
+      token:
+        url: http://nekonex-ingress.info/api/keycloak/auth/realms/nekonex-realm/protocol/openid-connect/token
+        auth-method: client-secret-post
+  logging:
+    level:
+        io.micronaut.security: TRACE
 
 kubernetes:
   client:

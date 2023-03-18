@@ -137,6 +137,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 kubectl get services -n ingress-nginx
 kubectl describe ingress ingress
 minikube service -n ingress-nginx ingress-nginx-controller --url
+kubectl get pods --all-namespaces
+kubectl exec -it controller -n namespace -- /bin/sh
 ```
 
 #Special thanks

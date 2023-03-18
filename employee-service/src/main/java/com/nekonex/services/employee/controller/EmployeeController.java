@@ -6,13 +6,16 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.inject.Inject;
 import java.util.List;
 
-@Controller("/employees")
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller("/api/employees")
 public class EmployeeController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
@@ -51,6 +54,7 @@ public class EmployeeController {
 	}
 
 	@Get("/count")
+	@Secured(SecurityRule.IS_ANONYMOUS)
 	long count() {
 		return repository.count();
 	}
