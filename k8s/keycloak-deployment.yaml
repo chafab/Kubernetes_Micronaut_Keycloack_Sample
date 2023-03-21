@@ -46,6 +46,8 @@ spec:
               value: "postgres"
             - name: DB_DATABASE
               value: "keycloackDB"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: "http://nekonex-ingress.info/api/keycloak/"
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

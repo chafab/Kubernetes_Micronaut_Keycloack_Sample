@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-runtime</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.micronaut.security</groupId>
             <artifactId>micronaut-security</artifactId>
         </dependency>
@@ -105,6 +109,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mongodb</artifactId>
             <scope>test</scope>
@@ -113,6 +122,14 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
@@ -141,6 +158,11 @@
                         <path>
                             <groupId>io.micronaut.security</groupId>
                             <artifactId>micronaut-security</artifactId>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.22</version>
                         </path>
                         <!--                        <path>-->
                         <!--                            <groupId>io.micronaut.data</groupId>-->
