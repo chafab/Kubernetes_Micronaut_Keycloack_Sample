@@ -4,30 +4,25 @@ micronaut:
   config-client:
     enabled: true
   security:
-    authentication: idtoken
-    endpoints:
-      login:
-        enabled: true
-    redirect:
-      login-success: /secure/anonymous
+    authentication: bearer
     token:
+      roles-name: 'groups'
       jwt:
         enabled: true
-        signatures.jwks.keycloak:
-          url: http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/certs
+        signatures:
+          jwks:
+            keycloak:
+              url: 'http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/certs'
     oauth2.clients.keycloak:
       grant-type: password
       client-id: nekonex_client
       client-secret: ErognUgshFeI4gSFIBdfqxAYaV46X78N
-      authorization:
-        url: http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/auth
       token:
         url: http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/token
         auth-method: client-secret-post
   logging:
     level:
         io.micronaut.security: TRACE
-
 kubernetes:
   client:
     config-maps:

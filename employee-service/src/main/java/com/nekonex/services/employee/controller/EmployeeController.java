@@ -35,6 +35,10 @@ public class EmployeeController {
 		return repository.findById(id);
 	}
 
+	@Get("/SecureHello")
+	public String hello() {
+		return "Hello authenticated user~";
+	}
 	@Get
 	public List<Employee> findAll() {
 		LOGGER.info("Employees find");

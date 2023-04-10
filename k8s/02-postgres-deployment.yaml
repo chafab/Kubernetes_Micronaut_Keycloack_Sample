@@ -15,15 +15,15 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: postgres
+      app: keycloak-db
   replicas: 1
   template:
     metadata:
       labels:
-        app: postgres
+        app: keycloak-db
     spec:
       containers:
-        - name: postgres
+        - name: keycloak-db
           image: postgres:13
           env:
             - name: POSTGRES_USER
@@ -37,9 +37,9 @@ spec:
                   name: postgres-creds
                   key: password
             - name: POSTGRES_DB
-              value: keycloack,db2
+              value: keycloak
           ports:
-            - name: postgres
+            - name: keycloak-db
               containerPort: 5432
           volumeMounts:
             - name: postgres-storage
@@ -53,11 +53,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: keycloak-db
 spec:
   selector:
-    app: postgres
+    app: keycloak-db
   ports:
-    - name: postgres
+    - name: keycloak-db
       port: 5432
   type: ClusterIP
