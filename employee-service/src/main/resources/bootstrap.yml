@@ -4,7 +4,6 @@ micronaut:
   config-client:
     enabled: true
   security:
-    authentication: bearer
     token:
       roles-name: 'groups'
       jwt:
@@ -13,13 +12,6 @@ micronaut:
           jwks:
             keycloak:
               url: 'http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/certs'
-    oauth2.clients.keycloak:
-      grant-type: password
-      client-id: nekonex_client
-      client-secret: ErognUgshFeI4gSFIBdfqxAYaV46X78N
-      token:
-        url: http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/token
-        auth-method: client-secret-post
   logging:
     level:
         io.micronaut.security: TRACE

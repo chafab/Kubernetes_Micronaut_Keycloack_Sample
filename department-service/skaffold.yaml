@@ -3,6 +3,8 @@ kind: Config
 build:
   artifacts:
     - image: nekonex/department
-      jib: {}
+      jib:
+        args:
+          - "-DskipTests"
   tagPolicy:
     gitCommit: {}

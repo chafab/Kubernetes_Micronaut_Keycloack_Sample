@@ -5,6 +5,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
@@ -26,7 +27,7 @@ import java.util.Map;
 @Singleton
 @Slf4j
 //@Requires(notEnv = Environment.TEST)
-//@Requires(env = {Environment.CLOUD, "k8s"})
+@Requires(env = {Environment.CLOUD, "k8s"})
 public class KeycloakUserDetailsMapper implements OauthAuthenticationMapper {
     @Property(name = "micronaut.security.oauth2.clients.keycloak.client-id")
     private String clientId;
@@ -40,12 +41,12 @@ public class KeycloakUserDetailsMapper implements OauthAuthenticationMapper {
     KeycloakUserDetailsMapper(){
         log.info("KeycloakUserDetailsMapper() Constructor");
     }
-    @Override
+
     public Publisher<AuthenticationResponse> createAuthenticationResponse(
             TokenResponse tokenResponse, @Nullable State state) {
         log.info("trying to retrieve user" +client.toString());
         Publisher<KeycloakUser> res = client
-                .retrieve(HttpRequest.POST("/introspect",
+                .retrieve(HttpRequest.POST("/api/keycloak/realms/nekonex_realm/protocol/openid-connect/token/introspect",
                                 "token=" + tokenResponse.getAccessToken())
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .basicAuth(clientId, clientSecret), KeycloakUser.class);

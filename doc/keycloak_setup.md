@@ -46,6 +46,7 @@ In our employee service config we use the client nekonex_keycloak, set it up lik
 On the next screens choose :  
 - Client authentication
 - Standard flow
+- Implicit flow
 - Direct Access grants 
 - OAuth 2.0 Device Authorization Grant  
 then click on Next:
@@ -79,6 +80,10 @@ Then click on Credentials and set password
 On the password window enter nekonex_password and set temporary to Off
 ![Microservices Diagram](pictures/keycloak_user_04.png)
 
+Check the openid endpoint
+```
+curl http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/.well-known/openid-configuration
+```
 A bearer token can be acquired using curl for example:
 ```
 curl -X POST \
@@ -86,7 +91,7 @@ http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-co
 -H 'Content-Type: application/x-www-form-urlencoded' \
 -d 'grant_type=password' \
 -d 'client_id=nekonex_client' \
--d 'client_secret=ErognUgshFeI4gSFIBdfqxAYaV46X78N' \
+-d 'client_secret=gssApIrBoPEWjv9BaRmUoFeC5WSYsBtH' \
 -d 'username=nekonex_user' \
 -d 'password=password'
 ```

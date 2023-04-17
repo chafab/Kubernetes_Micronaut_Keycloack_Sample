@@ -38,7 +38,8 @@ Or remove the corresponding section in the ingress-deployment before applying  0
 `kubectl apply -f 02-postgres-deployment.yaml` : creates the postgresdb that can be used by keycloak. keycloak also support MySQL  
 `kubectl apply -f 03-mongo-deployment.yaml` : creates the MongoDB that will be used in our services. Note that usually each service should have it's own DB which is not the case here.  
 `kubectl apply -f 04-keycloak-deployment.yaml` : creates the keycloak service and can be accessed by forwarding the port and using the login admin password admin
-`kubectl apply -f 05-ingress-deployment.yaml` : creates the ingress component that can be used to access the different services
+`kubectl apply -f 05-nginx-deploy.yaml` : creates the ingress component that can be used to access the different services
+original file came from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
 `kubectl apply -f 06-ingress-deployment.yaml` : creates the ingress component that can be used to access the different services
 
 if there are any issues with 6th deployment file apply :
@@ -134,15 +135,18 @@ sudo usermod -aG docker $USER && newgrp docker
 ```
 it will add the user to the user group
 
+Get the open id config at
+http://localhost:22222/realms/nekonex_realm/.well-known/openid-configuration
 
 #Useful commands:
 ```
 kubectl get ingress --all-namespaces
 kubectl delete ingress my-example-ingress
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
-kubectl get services -n ingress-nginx
+kubectl get servicesc
 kubectl describe ingress ingress
 minikube service -n ingress-nginx ingress-nginx-controller --url
+minikube service -n haproxy-controller haproxy-kubernetes-ingress --url
 kubectl get pods --all-namespaces
 kubectl exec -it controller -n namespace -- /bin/sh
 ```
