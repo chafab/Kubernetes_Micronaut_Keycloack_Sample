@@ -2,10 +2,13 @@ package com.nekonex.services.department.controller;
 
 import java.util.List;
 
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.nekonex.services.department.client.EmployeeClient;
@@ -13,6 +16,7 @@ import com.nekonex.services.department.model.Department;
 import com.nekonex.services.department.repository.DepartmentRepository;
 
 
+@Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/api/departments")
 public class DepartmentController {
 
@@ -52,11 +56,22 @@ public class DepartmentController {
 	}
 
 	@Get("/organization/{organizationId}/with-employees")
-	public List<Department> findByOrganizationWithEmployees(Long organizationId) {
+	public List<Department> findByOrganizationWithEmployees(HttpRequest<?> request, Long organizationId) {
 		LOGGER.info("Department find: organizationId={}", organizationId);
+		String bearerToken = request.getHeaders().getAuthorization().orElse(null);
 		List<Department> departments = repository.findByOrganization(organizationId);
-		departments.forEach(d -> d.setEmployees(employeeClient.findByDepartment(d.getId())));
+		departments.forEach(d -> d.setEmployees(employeeClient.findByDepartment(bearerToken, d.getId())));
 		return departments;
 	}
 
+	@Get("/SecureHello")
+	public String hello() {
+		return "Hello authenticated user~";
+	}
+
+	@Get("/AnonymousHello")
+	@Secured(SecurityRule.IS_ANONYMOUS)
+	public String helloAnonymous() {
+		return "Hello Anonymous";
+	}
 }

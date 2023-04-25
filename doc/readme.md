@@ -41,7 +41,7 @@ Or remove the corresponding section in the ingress-deployment before applying  0
 `kubectl apply -f 05-nginx-deploy.yaml` : creates the ingress component that can be used to access the different services
 original file came from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
 `kubectl apply -f 06-ingress-deployment.yaml` : creates the ingress component that can be used to access the different services
-
+`kubectl get deployments -o yaml` : get all deployments
 if there are any issues with 6th deployment file apply :
 Now each of our services can be run in each directory by running
 ```
@@ -68,7 +68,7 @@ mongodb        10.244.0.5:27017    12h
 try then
 ```
 curl http://KUBERNET_HOST:EMPLOYEE_SERVICE_PORT/api/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
-curl http://KUBERNET_HOST:DEPARTMENT_SERVICE_PORT/api/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"{"id":2,"organizationId":2,"name":"Test2"}
+curl http://KUBERNET_HOST:DEPARTMENT_SERVICE_PORT/api/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"
 curl http://KUBERNET_HOST:ORGANIZATION_SERVICE_PORT/api/departments/organization/2/with-employees
 ```
 
@@ -151,6 +151,12 @@ kubectl get pods --all-namespaces
 kubectl exec -it controller -n namespace -- /bin/sh
 ```
 
+
+```
+Simple check on the employee service
+curl -v http://nekonex-ingress.info/api/employees/SecureHello -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoeG5IbEZpUU9hQmVQN3k2dGJIQjNLWHNRcl9IZlNXNDBrTkNLV2NQYmdzIn0.eyJleHAiOjE2ODIzNDA4NjEsImlhdCI6MTY4MjM0MDU2MSwianRpIjoiOWEyZjFmY2YtZjJlZi00ODBhLTgwZWUtNDNkNmEzNjQxNWI5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrLmRlZmF1bHQ6ODA4MC9yZWFsbXMvbmVrb25leF9yZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhOThmYmM0NS1iMzNlLTQ5ZjAtYjRhNy04ZmE2MzJmZWU5ZjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZWtvbmV4X2NsaWVudCIsInNlc3Npb25fc3RhdGUiOiJiNTA0MDdiNi00YzZkLTQ5NTQtYTQ3Mi1lZjNmNjg0M2M4ZDUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW5la29uZXhfcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiYjUwNDA3YjYtNGM2ZC00OTU0LWE0NzItZWYzZjY4NDNjOGQ1IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJuZWtvbmV4X3VzZXIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.C5mRkPmr5DGx6eMebkRmZfMmY6J8dMXtvcqrUIbCO_Ja77eoF3aeeo1VjSpyv4uoskeGnRApevVsn3VAnm1snB-t5g7jp8J_TvP_bl-tMtyYnsJE1Gl5MEDholR5N0JxxnaVIJ0_BU9gc-C-UBKdHhiDHgMZagA5I1OJ9E4tXCysj6WRFj_f9vPr38SGbItCeYLH1ayXyMAH2qq4Bj0sW6-NZWCnemiZLzuWUCozUNNEh6I2Y5AYZIQZhbHU5Sf4JpAJmUiNCvF-SemDDlT3AG3B0OvuMrmSkUq8i6DOJ-mZwrN0KqW3QSlEE_hdKtirabSToiQJKcSlNNknL9VvIw"
+
+```
 #Special thanks
 Piotr Minkowski for his great [tutorials](https://piotrminkowski.com/), a lot that can be seen in this repository have been created from his tutorials
 [ChatGPT](https://chat.openai.com/) for helping me learn and understand more about Kubernetes and Micronaut 

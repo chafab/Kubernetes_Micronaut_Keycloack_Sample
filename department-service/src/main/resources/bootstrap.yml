@@ -3,6 +3,15 @@ micronaut:
     name: department
   config-client:
     enabled: true
+  security:
+    token:
+      roles-name: 'groups'
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            keycloak:
+              url: 'http://nekonex-ingress.info/api/keycloak/realms/nekonex_realm/protocol/openid-connect/certs'
 
 kubernetes:
   client:
