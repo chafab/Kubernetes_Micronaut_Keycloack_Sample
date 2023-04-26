@@ -1,7 +1,22 @@
 # Guide to Micronaut Kubernetes KeyCloack Sample Project
 
-The goal of this project is to have a reusable project that uses Kubernetes, Micronaut, Keycloak and later Grafana.
-A secondary goal is to also create a little bit of documentation that can also be used as a tutorial for other developers.  
+In this project I'm demonstrating you the most interesting features of [Micronaut Kubernetes Project](https://micronaut-projects.github.io/micronaut-kubernetes/snapshot/guide/) for integration between Micronaut, Keycloak and Kubernetes API.
 
-If you don't have minikube, java or skaffold installed you can execute the install_depenencies.sh in the scripts folder.  
-To apply the kubernetes deployment files you can either deploy the one from the k8s folders one by one or use the k8s_deploy.sh script
+
+## Architecture
+
+Our sample microservices-based system consists of the following modules:
+- **employee-service** - a module containing the first of our sample microservices that allows to perform CRUD operation on Mongo repository of employees
+- **department-service** - a module containing the second of our sample microservices that allows to perform CRUD operation on Mongo repository of departments. It communicates with employee-service.
+
+The following picture illustrates the architecture described above including Kubernetes objects.
+
+![Microservices Diagram](doc/pictures/diagram.png)
+
+## Documentation
+Documentation and steps to install and run the services is available under the doc directory
+
+## Special thanks
+Piotr Minkowski for his great [tutorials](https://piotrminkowski.com/), a lot that can be seen in this repository have been created from his tutorials  
+Sergio del Amo Caballero for understanding more about standard and implicit flow and how to setup keycloak with Micronaut  
+[ChatGPT](https://chat.openai.com/) for helping me learn and understand more about Kubernetes and Micronaut 

@@ -39,6 +39,13 @@ public class EmployeeController {
 	public String hello() {
 		return "Hello authenticated user~";
 	}
+
+	@Get("/AnonymousHello")
+	@Secured(SecurityRule.IS_ANONYMOUS)
+	public String helloAnonymous() {
+		return "Hello Anonymous";
+	}
+
 	@Get
 	public List<Employee> findAll() {
 		LOGGER.info("Employees find");
@@ -58,7 +65,6 @@ public class EmployeeController {
 	}
 
 	@Get("/count")
-	@Secured(SecurityRule.IS_ANONYMOUS)
 	long count() {
 		return repository.count();
 	}

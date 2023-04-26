@@ -21,7 +21,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <jdk.version>11</jdk.version>
+        <jdk.version>17</jdk.version>
         <sonar.projectKey>kubernetes-micronaut-keycloack-sample</sonar.projectKey>
         <sonar.organization>nekonex</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>

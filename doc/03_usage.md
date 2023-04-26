@@ -1,0 +1,57 @@
+# Usage
+
+As ingress is setup to use the nekonex-ingress.info host one additional step is required
+```
+kubectl get ingress
+```
+As this operation can take a bit of time wait until the IP address is displayed for example
+```
+NAME              CLASS   HOSTS                  ADDRESS        PORTS   AGE
+nekonex-ingress   nginx   nekonex-ingress.info   192.168.49.2   80      66m
+```
+Please change your /etc/hosts to have the nekones-ingress.info setup for example
+```
+sudo sh -c 'echo "192.168.49.2 nekonex-ingress.info" >> /etc/hosts'
+```
+
+Now everything is ready to run the different services to do so in each service folder one can run:
+
+```
+skaffold dev
+```
+
+To check that everything is working both services provide an anonymous access /AnonymousHello
+```
+curl http://KUBERNET_HOST:EMPLOYEE_SERVICE_PORT/api/employees/AnonymousHello
+curl http://KUBERNET_HOST:DEPARTMENT_SERVICE_PORT/api/departments/AnonymousHello
+```
+
+For example:
+```
+curl http://192.168.49.2:30377/api/employees/AnonymousHello
+curl http://192.168.49.2:30377/api/departments/AnonymousHello
+```
+One can also use the hostname and access the api in a similar fashion
+```
+curl nekonex-ingress.info/api/employees/AnonymousHello
+```
+to use the secured API one need to login using keycloak, check the keycloak documentation on how to get a token
+then on the different access provide the token using `-H "Authorization: Bearer theToken` for example
+`-H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoeG5IbEZpUU9hQmVQN3k2dGJIQjNLWHNRcl9IZlNXNDBrTkNLV2NQYmdzIn0.eyJleHAiOjE2ODI0NTcxMjEsImlhdCI6MTY4MjQyMTEyMSwianRpIjoiMTE3NmJlZjQtMmMwNi00ZDMzLTgyNjQtZWZmNWYxNDk4M2Q4IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrLmRlZmF1bHQ6ODA4MC9yZWFsbXMvbmVrb25leF9yZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhOThmYmM0NS1iMzNlLTQ5ZjAtYjRhNy04ZmE2MzJmZWU5ZjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZWtvbmV4X2NsaWVudCIsInNlc3Npb25fc3RhdGUiOiIxZjdjOTlmNC1iNjRhLTQyMmMtODBhNC05YWYyMWY3Y2M1M2YiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW5la29uZXhfcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiMWY3Yzk5ZjQtYjY0YS00MjJjLTgwYTQtOWFmMjFmN2NjNTNmIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJuZWtvbmV4X3VzZXIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.m4t4ussWlS5j1QxkDg6rZpkI25GitBuPzFbsv3jsr5v_gghyjS4ZmCZ8U-pblHOdkNyVzemiOl5UPpHpueg1BxY8ooLfFI6XDb3qGAQBZrlGy6heOTcmW-_Ba-LOnWI2LVtObZFP5YlprYvkC4XcHFtm6HAMCbvk7iVeXDpU9yhQ_EboIQ6BXii1vntP67cgz_wWuEpal_to1aTC0B5ic7nzWOaE2ENPFvbrWYj8NGaRwprC3JMY7JHvM_UNNJIb57P6Alyf17GJrQ6eUkXgT4GYhD3wcJ5AHIR14opk9eLTR3moXljCgLPDZahnSsIOQsZ2F34HHqfrtpL6Bx5XBw" `
+
+To test the secured access try the following commands, and replace the token by the one you had from keycloak 
+```
+curl -v http://nekonex-ingress.info/api/employees/SecureHello -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoeG5IbEZpUU9hQmVQN3k2dGJIQjNLWHNRcl9IZlNXNDBrTkNLV2NQYmdzIn0.eyJleHAiOjE2ODIzNDA4NjEsImlhdCI6MTY4MjM0MDU2MSwianRpIjoiOWEyZjFmY2YtZjJlZi00ODBhLTgwZWUtNDNkNmEzNjQxNWI5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrLmRlZmF1bHQ6ODA4MC9yZWFsbXMvbmVrb25leF9yZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhOThmYmM0NS1iMzNlLTQ5ZjAtYjRhNy04ZmE2MzJmZWU5ZjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZWtvbmV4X2NsaWVudCIsInNlc3Npb25fc3RhdGUiOiJiNTA0MDdiNi00YzZkLTQ5NTQtYTQ3Mi1lZjNmNjg0M2M4ZDUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW5la29uZXhfcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiYjUwNDA3YjYtNGM2ZC00OTU0LWE0NzItZWYzZjY4NDNjOGQ1IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJuZWtvbmV4X3VzZXIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.C5mRkPmr5DGx6eMebkRmZfMmY6J8dMXtvcqrUIbCO_Ja77eoF3aeeo1VjSpyv4uoskeGnRApevVsn3VAnm1snB-t5g7jp8J_TvP_bl-tMtyYnsJE1Gl5MEDholR5N0JxxnaVIJ0_BU9gc-C-UBKdHhiDHgMZagA5I1OJ9E4tXCysj6WRFj_f9vPr38SGbItCeYLH1ayXyMAH2qq4Bj0sW6-NZWCnemiZLzuWUCozUNNEh6I2Y5AYZIQZhbHU5Sf4JpAJmUiNCvF-SemDDlT3AG3B0OvuMrmSkUq8i6DOJ-mZwrN0KqW3QSlEE_hdKtirabSToiQJKcSlNNknL9VvIw"
+curl -v http://nekonex-ingress.info/api/departments/SecureHello -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoeG5IbEZpUU9hQmVQN3k2dGJIQjNLWHNRcl9IZlNXNDBrTkNLV2NQYmdzIn0.eyJleHAiOjE2ODIzNDA4NjEsImlhdCI6MTY4MjM0MDU2MSwianRpIjoiOWEyZjFmY2YtZjJlZi00ODBhLTgwZWUtNDNkNmEzNjQxNWI5IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrLmRlZmF1bHQ6ODA4MC9yZWFsbXMvbmVrb25leF9yZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJhOThmYmM0NS1iMzNlLTQ5ZjAtYjRhNy04ZmE2MzJmZWU5ZjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJuZWtvbmV4X2NsaWVudCIsInNlc3Npb25fc3RhdGUiOiJiNTA0MDdiNi00YzZkLTQ5NTQtYTQ3Mi1lZjNmNjg0M2M4ZDUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLW5la29uZXhfcmVhbG0iLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwic2lkIjoiYjUwNDA3YjYtNGM2ZC00OTU0LWE0NzItZWYzZjY4NDNjOGQ1IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJuZWtvbmV4X3VzZXIiLCJnaXZlbl9uYW1lIjoiIiwiZmFtaWx5X25hbWUiOiIifQ.C5mRkPmr5DGx6eMebkRmZfMmY6J8dMXtvcqrUIbCO_Ja77eoF3aeeo1VjSpyv4uoskeGnRApevVsn3VAnm1snB-t5g7jp8J_TvP_bl-tMtyYnsJE1Gl5MEDholR5N0JxxnaVIJ0_BU9gc-C-UBKdHhiDHgMZagA5I1OJ9E4tXCysj6WRFj_f9vPr38SGbItCeYLH1ayXyMAH2qq4Bj0sW6-NZWCnemiZLzuWUCozUNNEh6I2Y5AYZIQZhbHU5Sf4JpAJmUiNCvF-SemDDlT3AG3B0OvuMrmSkUq8i6DOJ-mZwrN0KqW3QSlEE_hdKtirabSToiQJKcSlNNknL9VvIw"
+
+```
+
+Here are few example that can be accessed securely for the sake of readability the token parameter will not be specified
+```
+curl http://192.168.49.2:30377/api/employees -d '{"name":"John Smith","age":30,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
+curl http://nekonex-ingress.info/api/employees -d '{"name":"Paul Walker","age":50,"position":"director","departmentId":2,"organizationId":2}' -H "Content-Type: application/json"
+curl http://192.168.49.2:30266/api/departments -d '{"name":"Test2","organizationId":2}' -H "Content-Type: application/json"
+curl http://nekonex-ingress.info/api/departments/organization/2/with-employees
+```
+
+
